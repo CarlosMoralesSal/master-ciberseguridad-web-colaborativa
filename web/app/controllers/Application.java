@@ -3,6 +3,7 @@ package controllers;
 import models.Constants;
 import models.User;
 import play.mvc.*;
+import play.i18n.Messages;
 
 import java.util.List;
 
@@ -43,10 +44,13 @@ public class Application extends Controller {
 
 
     public static void removeStudent(String student) {
-        checkTeacher();
-
-        User.remove(student);
-        index();
+        if ((session.contains("username"))&& (session.contains("password"))) {
+            checkTeacher();
+            User.remove(student);
+            index();
+        }
+        flash.put("error", Messages.get("Trying to access to forbiden area"));
+        Secure.login();
     }
 
 
